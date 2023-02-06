@@ -1,4 +1,4 @@
-enum Gender { non, male, female }
+enum Gender { anon, male, female }
 
 enum WeaponType { wand, sword, bow, dagger, knuckle }
 
