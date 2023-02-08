@@ -1,76 +1,100 @@
-abstract class GameObject {
-  void objectState() {}
-}
+enum Gender { anon, male, female }
 
 enum WeaponType { wand, sword, bow, dagger, knuckle }
 
-enum Job { wizard, warrior, archer, bandit, pirate }
+enum Jobs { beginner, wizard, warrior, archer, bandit, pirate }
 
-enum MonsterType { dragon, slime }
+enum ObjectType { admin, user, monster }
 
-class Character extends GameObject {
+class DefaultValues {
+  int level = 1;
+  int hp = 100;
+  int mp = 0;
+  int xp = 0;
+}
+
+// 초보자; 부모 클래스
+class GameObject with DefaultValues {
   String name;
-  WeaponType weapon;
-  Job job;
-  int hp, mp, xp;
-
-  Character({
-    required this.name,
-    required this.weapon,
-    required this.job,
-    required this.xp,
-    required this.hp,
-    required this.mp,
-  });
-
-  void objectState() {
-    print("$name | 직업: $job | 체력: $hp | 마나: $mp | 경험치: $xp |");
+  ObjectType type;
+  GameObject({required this.name, required this.type});
+  void printGameObjectInfo() {
+    print("| $type | $name | 레벨: $level | 체력: $hp | 마나: $mp |");
   }
 }
 
-class Monster extends GameObject {
-  MonsterType monster;
-  int hp;
+// warrior
+class Medium extends GameObject {
+  ObjectType type;
+  String name;
+  Gender gender;
+  WeaponType weapon;
+  Jobs job;
 
-  Monster({
-    required this.monster,
-    required this.hp,
-  });
+  Medium({
+    required this.gender,
+    required this.job,
+    required this.weapon,
+    required this.name,
+    required this.type,
+  }) : super(name: name, type: type);
 
-  void objectState() {
-    print("$monster | 체력: $hp |");
+  void printUserInfo() {
+    print(
+        "| $type | $name | 성별: $gender | 레벨: $level |직업: $job | 무기: $weapon |체력: $hp | 마나: $mp | 경험치: $xp |");
   }
 }
 
 void main() {
-  var server01_user001 = Character(
+  var gameAdmin = GameObject(
     name: "Sirius",
-    weapon: WeaponType.wand,
-    job: Job.wizard,
-    xp: 89,
-    hp: 2000,
-    mp: 2000,
-  );
-  var server01_user002 = Character(
+    type: ObjectType.admin,
+  )
+    ..level = 9999
+    ..hp = 9999
+    ..mp = 9999
+    ..xp = 9999
+    ..printGameObjectInfo();
+
+  var server01_user001 = Medium(
+    type: ObjectType.user,
     name: "nico",
-    weapon: WeaponType.sword,
-    job: Job.warrior,
-    xp: 28,
-    hp: 4000,
-    mp: 500,
-  );
+    gender: Gender.male,
+    job: Jobs.wizard,
+    weapon: WeaponType.wand,
+  )
+    ..hp = 2000
+    ..mp = 1000
+    ..level = 30
+    ..printUserInfo();
 
-  var monster001 = Monster(
-    monster: MonsterType.dragon,
-    hp: 10000,
-  );
-  var monster002 = Monster(
-    monster: MonsterType.slime,
-    hp: 2500,
-  );
+  var server01_user002 = Medium(
+    gender: Gender.female,
+    job: Jobs.archer,
+    weapon: WeaponType.bow,
+    name: "dingdong",
+    type: ObjectType.user,
+  )
+    ..hp = 1500
+    ..mp = 600
+    ..level = 31
+    ..printUserInfo();
 
-  server01_user001.objectState();
-  server01_user002.objectState();
-  monster001.objectState();
-  monster002.objectState();
+  var monster001 = GameObject(
+    name: "Dragon",
+    type: ObjectType.monster,
+  )
+    ..level = 40
+    ..hp = 10000
+    ..mp = 5000
+    ..printGameObjectInfo();
+
+  var monster002 = GameObject(
+    name: "Slime",
+    type: ObjectType.monster,
+  )
+    ..level = 25
+    ..hp = 900
+    ..mp = 0
+    ..printGameObjectInfo();
 }
